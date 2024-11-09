@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Attendance {
+  id Int @unique @id @default(autoincrement())
+  student_id Int
+  meeting_id Int
+  status String
+  time DateTime
+
+  notification Notification?  @relation(fields: [notification_id], references: [id])
+
+  notification_id Int? @unique
+}
+
+model Question {
+  id Int @unique @id @default(autoincrement())
+  text String
+  questionnaires Questionnaire[]
+}
+
+model Answer {
+  id Int @unique @id @default(autoincrement())
+  student_id Int
+  questionnaire_id Int
+  scale_value Int 
+  submission_time DateTime
+
+  questionnaire Questionnaire @relation(fields: [questionnaire_id], references: [id])
+}
+
+model Notification {
+  id Int @unique @id @default(autoincrement())
+  sent_time DateTime
+  is_read Boolean
+
+  attendance Attendance? @relation
+}
+
+model Questionnaire {
+  id Int @unique @id @default(autoincrement())
+  meeting_id Int
+  question_id Int
+
+  question Question @relation(fields: [question_id], references: [id])
+  answers Answer[]
+}
