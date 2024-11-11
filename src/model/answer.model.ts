@@ -1,5 +1,5 @@
 export class SubmitAnswerRequest {
-  answers: SubmitAnswerItem;
+  answers: SubmitAnswerItem[];
 }
 
 export class SubmitAnswerItem {

@@ -19,6 +19,7 @@ export class AttendanceController {
       attendance.meeting_id = meetingId;
       attendance.time = new Date();
     });
+    
     const result = await this.attendanceService.submit(request);
     return {
       data: result,
